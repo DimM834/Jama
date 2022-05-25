@@ -1,0 +1,50 @@
+soldier.cloudmqtt.com
+10996
+Пользователь	Lafbqohy
+пароль	fOFwRaY3BLZK
+
+
+Websockets Port (TLS only)	30996
+
+User  esp01_dom
+Pasw	mrY3d%aSq7k
+
+
+esp02_dom
+56fgkljknsf%nh
+
+User  esp03_dom
+Pasw	2008Kirov+
+
+Вход через  GitHub
+
+Получение 
+esp02/relay/rel1
+esp02/relay/rel2
+esp02/relay/rel3
+esp02/status/auto
+esp02/status/t_min
+esp02/status/t_max
+esp02/status/t2_min
+esp02/status/t2_max
+esp02/status/t3_min
+esp02/status/t3_max
+
+Подписка 
+esp02/sensor/#
+esp02/relay/#
+esp02/status/#
+Отправка 
+esp02/sensor/t1
+esp02/sensor/t2
+esp02/sensor/h1
+esp02/sensor/h2
+esp02/relay/rel1
+esp02/relay/rel2
+
+esp02/ard/value/work
+esp02/ard/value/top
+esp02/ard/value/bottom
+esp02/ard/top_fl
+esp02/ard/bottom_fl
+esp02/ard/relay
