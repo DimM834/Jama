@@ -56,24 +56,25 @@ DallasTemperature DS18B20(&oneWire);
 
 void callback(char* topic, byte* payload, unsigned int length)
 {
+//---/// Отключил управление по MQTT
 
-  char json[length + 1];
-  strncpy (json, (char*)payload, length);
-  json[length] = '\0';
+  // char json[length + 1];
+  // strncpy (json, (char*)payload, length);
+  // json[length] = '\0';
 
-  String message = String(json);
-  Serial.print("topic= ");
-  Serial.println(topic);
+  // String message = String(json);
+  // Serial.print("topic= ");
+  // Serial.println(topic);
 
-  Serial.print("message= ");
-  Serial.println(message);
-  //Serial.println( strcmp(topic, _NUMBER_SEN "/relay/rel1"));
+  // Serial.print("message= ");
+  // Serial.println(message);
+  // //Serial.println( strcmp(topic, _NUMBER_SEN "/relay/rel1"));
 
-  if (strcmp(topic, _NUMBER_SEN "/relay/rel1") == 0)
-  { // Если пришло сообщение для relay1
-    byte rel = (byte)message.toInt();
-    Relay_ON_OFF (rel);
-  }
+  // if (strcmp(topic, _NUMBER_SEN "/relay/rel1") == 0)
+  // { // Если пришло сообщение для relay1
+  //   byte rel = (byte)message.toInt();
+  //   Relay_ON_OFF (rel);
+  // }
  
   
   //  // Тоже самое для relay2

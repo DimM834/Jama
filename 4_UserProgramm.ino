@@ -21,7 +21,7 @@ void Button() {
       BUTTON_STATUS = false;
       // выключить свет
       Relay_ON_OFF(0);
-      sendMQTT_relay();
+      //sendMQTT_relay();
       BUTTON_HOLD_MILLIS = millis() - 1000;  // защита от дребезга, следующая проверка через 1 с
     }
   } else  //Когда  нажата кнопка
@@ -30,7 +30,7 @@ void Button() {
       BUTTON_STATUS = true;
       // включить свет
       Relay_ON_OFF(1);
-      sendMQTT_relay();
+     // sendMQTT_relay();
       BUTTON_HOLD_MILLIS = millis() - 1000;  // защита от дребезга, следующая проверка через 1 с
     }
   }
@@ -108,8 +108,9 @@ void Logika() {
 
 //-----------------------------------------------------------
 void Relay_ON_OFF(byte on_off) {
-  // ON_OFF = 1 - включить реле № 1.
+  
   // ON_OFF = 0 -выключить реле № 1.
+  // ON_OFF = 1 - включить реле № 1.
   // ON_OFF = 3 - включить реле № 2.
   // ON_OFF = 4 -выключить реле № 2.
 
@@ -125,15 +126,16 @@ void Relay_ON_OFF(byte on_off) {
       RELAY1_STATUS = true;
       break;
     case 3:
-      digitalWrite(_RELAY2, LOW);  //Realy Close
-      RELAY2_STATUS = false;
+      digitalWrite(_RELAY2, HIGH);  //Realy Power 
+      RELAY2_STATUS =true ;
       break;
     case 4:
-      digitalWrite(_RELAY2, HIGH);  //Realy Power
-      RELAY2_STATUS = true;
+      digitalWrite(_RELAY2, LOW );  //Realy Close
+      RELAY2_STATUS = false;
       break;
   }
   String chat = _CHAT_MY_ID;
   sendTelegramm_relay(chat);
+  sendMQTT_relay();
 }
 /////////////////////////////////////////

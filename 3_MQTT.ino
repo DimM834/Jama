@@ -16,7 +16,7 @@ void reconnect()
       //    client.subscribe(_NUMBER_SEN "/sensor/t1"); // подписываемся по топик с данными для температуры
       //    client.subscribe(_NUMBER_SEN "/sensor/h1"); // подписываемся по топик с данными для влажности
       //    client.subscribe(_NUMBER_SEN "/sensor/t2"); // подписываемся по топик с данными для температуры 2
-      client.subscribe(_NUMBER_SEN "/relay/#"); // подписываемся по топик с данными для реле
+      //client.subscribe(_NUMBER_SEN "/relay/#"); // подписываемся по топик с данными для реле
       //   client.subscribe(_NUMBER_SEN "/sensor/b1"); // подписываемся по топик с данными для кнопки
 
       //---////////////////////////////////////////////////////////////////
@@ -78,6 +78,14 @@ void sendMQTT_relay ()
   }
   else
   { client.publish(_NUMBER_SEN "/relay/rel1", "0", true );
+  }
+  //---//////////////////////////////////
+  if (RELAY2_STATUS)
+  {
+    client.publish(_NUMBER_SEN "/relay/rel2", "1", true );
+  }
+  else
+  { client.publish(_NUMBER_SEN "/relay/rel2", "0", true );
   }
   //-------/// сообщение о нажатии кнопки
   if (BUTTON_STATUS )

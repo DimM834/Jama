@@ -33,7 +33,7 @@ unsigned long nextapCheckTick;
 
 
 #define _NUMBER_SEN "ESP01"  // номенр сенсора и заголовок топика MQTT
-#define _VERSION_SEN "v2.0a"  // номенр сенсора и заголовок топика MQTT
+#define _VERSION_SEN "v2.1"  // номенр сенсора и заголовок топика MQTT
 
 #define _EEPROM_START 0
 struct LoginPass {
@@ -138,7 +138,7 @@ void loginPortal() {
 
 nextapCheckTick=millis();
   // работа портала
-   while (ui.tick()  and (millis() - nextapCheckTick > 600000)); // 10 минут 
+   while (ui.tick() or (millis() - nextapCheckTick > 600000)); // 10 минут 
   
 }
 

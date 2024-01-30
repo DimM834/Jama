@@ -17,7 +17,7 @@ void newMsg(FB_msg& msg) {
 
   // выводим всю информацию о сообщении
   //  Serial.println(msg.toString());
-  if (msg.text == "/menu") {
+  if (msg.text == "/menu" or msg.text == "Меню") {
     bot.showMenu("Овощная \t Состояние \t Обогрев", _CHAT_MY_ID);
     bot.closeMenu("-1001644002787");  // меню не корректно работает в канале
   }
@@ -44,14 +44,18 @@ void newMsg(FB_msg& msg) {
     // bot.sendMessage(t.timeString(), msg.chatID);
     // меню включить или выключить реле
     String menu1 = F("Включить \n Выключить");
-    String call1 = F("Start, Stop");
+    String call1 = F("ON, OFF");
     bot.inlineMenuCallback("-Обогрев-", menu1, call1);
-  } else if (msg.data == "Start") {
+  } else if (msg.data == "ON") {
+    bot.sendMessage("Включаю !", msg.chatID);
     Relay_ON_OFF(3);
-    sendTelegramm_relay(msg.chatID);
-  } else if (msg.data == "Stop") {
+    
+   // sendTelegramm_relay(msg.chatID);
+  } else if (msg.data == "OFF") {
+    bot.sendMessage("Выключаю !", msg.chatID);
     Relay_ON_OFF(4);
-    sendTelegramm_relay(msg.chatID);
+    
+    //sendTelegramm_relay(msg.chatID);
   } else if (msg.text == "Состояние" or msg.text == "/state" or msg.text == "/state@Dim834_bot") {
     sendTelegramm_relay(msg.chatID);
     String sendBot = "Сеть " + WiFi.SSID() + " уровень " + String(WiFi.RSSI()) + " мБд";
