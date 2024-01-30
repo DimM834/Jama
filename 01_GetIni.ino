@@ -2,32 +2,28 @@
 // все значения температуры умножаем на 10, чтобы работать с десятыми
 int TEMPERATURE[4] = {0, 0, 0, 0};
 int HUMIDITY[1] = {0};
+byte TEMPERATURE_MIN = 25;
+byte TEMPERATURE_MAX = 30;
+
 #define _BOT_TOKEN "1463566344:AAH8-z-k5hqmSfj0VleMuzAliI8WcEDtHqg"
 #define _CHAT_ID "1331422127,-1001644002787" // ,-1001701973117" // чат температура, чат подвал 
 #define _CHAT_MY_ID "1331422127" //  только чат с ботом мой ID,
 #define _MY_1MENU Овощная // пункт меню
 //---////////////////////////////////
-//byte mqtt_server[] = { 192, 168, 0, 129 };  // ip адрес сервера mqtt
-const char* mqtt_server = "m2.wqtt.ru";
-char buffer[10];
-#define  _MQTT_USER  "u_6UATRP"
-#define  _MQTT_PASS  "Ir4NIfsA"
-int PORT = 12051;
-//---////////////////////////////////
+
 //---------------------------------------------------------------------------
-#define _RELAY1  D0
-//#define _RELAY2  D5
+#define _RELAY1  D0 // Лампа
+#define _RELAY2  D5 // Реле для нагрева
 //#define _RELAY3  D8
 //#define _HUMIDITY_MAX 60
 
 //#define _DHT22_PIN  D8
 #define _DHT11_PIN  D4
 #define _18B20_PIN  D7
-#define _BUTTON_PIN  D6
+#define _BUTTON_PIN  D6 // средний разьем - 
 
 boolean RELAY1_STATUS = false  ;
-
-//boolean RELAY2_STATUS = false  ;
+boolean RELAY2_STATUS = false  ;
 boolean BUTTON_STATUS = false  ;
 
 #define _LOOP_MILLIS 1000 //раз в секунду опрос
@@ -71,9 +67,9 @@ void callback(char* topic, byte* payload, unsigned int length)
 
   Serial.print("message= ");
   Serial.println(message);
-  //Serial.println( strcmp(topic, "esp01/relay/rel1"));
+  //Serial.println( strcmp(topic, _NUMBER_SEN "/relay/rel1"));
 
-  if (strcmp(topic, "esp01/relay/rel1") == 0)
+  if (strcmp(topic, _NUMBER_SEN "/relay/rel1") == 0)
   { // Если пришло сообщение для relay1
     byte rel = (byte)message.toInt();
     Relay_ON_OFF (rel);
@@ -100,7 +96,7 @@ void callback(char* topic, byte* payload, unsigned int length)
   //    }
   //  }
   //  // проверка на состояние кнопки
-  //  if (strcmp(topic, "esp01/sensor/b1") == 0)
+  //  if (strcmp(topic, _NUMBER_SEN "/sensor/b1") == 0)
   //  {
   //    if (message == "HET" ) //and BUTTON_STATUS == true)
   //    {
@@ -124,7 +120,8 @@ void callback(char* topic, byte* payload, unsigned int length)
 //---/////////////////
 
 WiFiClient wifiClient;
-PubSubClient client(mqtt_server, PORT, callback, wifiClient);
+PubSubClient client; // PORT будет определён в Setup
+//PubSubClient client(mqtt_server, PORT, callback, wifiClient);
 
 FastBot bot(_BOT_TOKEN);
 //---///////////////////////////////////////////////////////////////////////////

@@ -3,71 +3,86 @@ void setup() {
   Serial.begin(115200);
 
   //---/////////////////////////////////////////////////////////////////
-  pinMode(_RELAY1, OUTPUT);  //Порт на для управления Реле
-  //  pinMode(_RELAY2, OUTPUT);  //Порт на для управления Реле
+  pinMode(_RELAY1, OUTPUT);  //Порт на для управления Реле лампа 
+  pinMode(_RELAY2, OUTPUT);  //Порт на для управления Реле нагрев
 
   pinMode(_BUTTON_PIN, INPUT);  //Порт на для сухой контакт
   Serial.println("RELAY");
   // первоначально реле выключить
-  digitalWrite(_RELAY1, LOW);   //Realy Close
-  //  digitalWrite(_RELAY2, LOW);   //Realy Close
+  digitalWrite(_RELAY1, LOW);  //Realy Close
+  digitalWrite(_RELAY2, LOW);   //Realy Close
 
   //---/////////////////////////////////////////////////////////////////
 
-  Serial.println("1"); delay(2000);
-
-  Serial.println("2"); delay(2000);
-
-  Serial.println("3"); delay(2000);
-
-  Serial.println("4"); delay(2000);
-
-  Serial.println("5"); delay(2000);
+  Serial.print("SDK version: ");
+  Serial.println(ESP.getSdkVersion());
+  Serial.print("Flash real size: ");
+  Serial.println(ESP.getFlashChipRealSize());
+  Serial.print("Firmware compiled for flash: ");
+  Serial.println(ESP.getFlashChipSize());
 
 
+  //---/////////////////////////////////
+  readEEPROM();
+  //---/// Код для проверки необходимости настройки сети
+  if (digitalRead(_BUTTON_PIN) == LOW)  //Для настройки сети LOW     кнопка нажата, заподня открыта
+  {
+    loginPortal();
+  }
+  //---///////////////////////////////
+  Serial.println("Данные для входа: ");
+  Serial.println();
+  Serial.print("SSID: ");
+  Serial.println(lp.ssid);
+  Serial.print("Password: ");
+  Serial.println(lp.pass);
+  Serial.print("mqttserv: ");
+  Serial.println(lp.mqttserv);
+  Serial.print("mqttlogin: ");
+  Serial.println(lp.mqttlogin);
+  Serial.print("mqttpass: ");
+  Serial.println(lp.mqttpass);
+  Serial.print("mqttport: ");
+  Serial.println(lp.mqttport);
 
-  Serial.print("SDK version: "); Serial.println(ESP.getSdkVersion());
-  Serial.print("Flash real size: "); Serial.println(ESP.getFlashChipRealSize());
-  Serial.print("Firmware compiled for flash: "); Serial.println(ESP.getFlashChipSize());
-  delay(10);
-
-  readSettingsESP();
 
 
+  //---//////////// Настройка клиента MQTT
+  client.setClient(wifiClient);
+  client.setServer(lp.mqttserv, lp.mqttport);
+  client.setCallback(callback);
+  //---//////////////////////////////
   // ------------------- WiFi ---------------
-  WiFi.disconnect(true);  // not autoupdate flash ssid+passw
+  WiFi.disconnect(true);  //
   WiFi.persistent(false);
-  WiFi.setPhyMode(WIFI_PHY_MODE_11G); // ?????
-  delay(500);
+  WiFi.setPhyMode(WIFI_PHY_MODE_11G);  // ?????
+  WiFi.begin(lp.ssid, lp.pass);
+  delay(2000);
+  // Инициализация
+  unsigned long wifiConnectStart = millis();
+  while (WiFi.status() != WL_CONNECTED) {
+    // if (WiFi.status() == WL_CONNECT_FAILED) {
+    //   ////Serial.println("Ошибка соединения WIFI. Проверьте данные: ");
+    //   ////Serial.println();
+    //   ////Serial.print("SSID: ");
+    //   ////Serial.println(lp.ssid);
+    //   ////Serial.print("Password: ");
+    //   ////Serial.println(lp.pass);
+    //   ////Serial.println();
+    // }
+    ////Serial.print(" .");
+    delay(500);
 
-  if (checkAPinair(String(CONF_eeprom.STAssid)))
-  {
-    WiFi.mode(WIFI_STA); // WIFI_AP_STA
-    STAinit();
+    if (millis() - wifiConnectStart > 5000) {
+      ////Serial.println("Ошибка соединения WiFi");
+      ////Serial.println("Попробуйте отправить обновленные параметры конфигурации.");
+      break;
+    }
   }
-  // create soft AP
-  if ( staInitOk == false )
-  {
-    WiFi.mode(WIFI_AP);
-    softAPinit();
-  }
-
-  // ----------- server ---------------------
-  server.on("/", handleRoot);
-  server.on("/a", handleActions);
-  server.on("/c", handleConfig);
-  //server.on("/reboot", handleReboot);
-  //server.on("/serialcheck", handleSerialCheck);
-  server.onNotFound([]() {
-    server.send(404, "text/plain", "Not Found\n\n");
-  });
-
-  server.begin();
 
   Serial.println("CTAPT ");
-  SEND_HOLD_MILLIS = _SEND_MILLIS;
-  //------------------------------------------------------
 
+  //------------------------------------------------------
 
   Serial.println("DHT");
   //  dht22.begin();
@@ -86,15 +101,18 @@ void setup() {
   //---///////////////////////////////////////////////////////////////////////////////
   //---///////////////////////////
 
-  // установить ID чата, чтобы принимать сообщения только из него
-  bot.setChatID(_CHAT_ID); // передай "" (пустую строку) чтобы отключить проверку
+   // установить ID чата, чтобы принимать сообщения только из него
+  bot.setChatID(_CHAT_ID);  // передай "" (пустую строку) чтобы отключить проверку
   // подключаем функцию-обработчик
-  bot.attach(newMsg);
+bot.attach(newMsg);
   // показать юзер меню (\t - горизонтальное разделение кнопок, \n - вертикальное
-  // bot.showMenu("Овощная \t Дата");//,_CHAT_MY_ID );
-  bot.showMenuText("-Меню-", "Овощьная \t Дата ", _CHAT_MY_ID );
-  bot.closeMenu( "-709850083"); // меню не корректно работает в канале
-  // отправить сообщение в указанный в setChatID
+  // bot.closeMenu( "-1001644002787"); // меню не корректно работает в канале
   bot.sendMessage("Привет, Старт!");
-  //---///////////////////////
+  // показать юзер меню (\t - горизонтальное разделение кнопок, \n - вертикальное
+  bot.showMenu("Овощная \t Состояние \t Дата", _CHAT_MY_ID);
+  //bot.showMenuText("-Меню-", "Овощная \t Дата" , _CHAT_MY_ID );
+  bot.closeMenu("-1001644002787");  // меню не корректно работает в канале
+  // отправить сообщение в указанный в setChatID
+ 
 }
+
