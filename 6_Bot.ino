@@ -18,7 +18,7 @@ void newMsg(FB_msg& msg) {
   // выводим всю информацию о сообщении
   //  Serial.println(msg.toString());
   if (msg.text == "/menu" or msg.text == "Меню") {
-    bot.showMenu("Овощная \t Состояние \t Обогрев", _CHAT_MY_ID);
+    bot.showMenu("Овощная \t Состояние \t Обогрев \n Настройки", _CHAT_MY_ID);
     bot.closeMenu("-1001644002787");  // меню не корректно работает в канале
   }
   if (msg.text == "Овощная" or msg.text == "/send@Dim834_bot" or msg.text == "/send") {
@@ -49,20 +49,40 @@ void newMsg(FB_msg& msg) {
   } else if (msg.data == "ON") {
     bot.sendMessage("Включаю !", msg.chatID);
     Relay_ON_OFF(3);
-    
-   // sendTelegramm_relay(msg.chatID);
+
+    // sendTelegramm_relay(msg.chatID);
   } else if (msg.data == "OFF") {
     bot.sendMessage("Выключаю !", msg.chatID);
     Relay_ON_OFF(4);
-    
+
     //sendTelegramm_relay(msg.chatID);
   } else if (msg.text == "Состояние" or msg.text == "/state" or msg.text == "/state@Dim834_bot") {
     sendTelegramm_relay(msg.chatID);
     String sendBot = "Сеть " + WiFi.SSID() + " уровень " + String(WiFi.RSSI()) + " мБд";
     bot.sendMessage(sendBot, msg.chatID);
-  }
+    sendBot = "Режим управления  ";
+    if (FLAG_EXTERNAL) {
+      sendBot += "внешнее";
+    } else {
+      sendBot += "по температуре";
+    }
+    bot.sendMessage(sendBot, msg.chatID);
+  } else if (msg.text == "Настройки") {
 
-  else {
+    String menu1 = F("По температуре \n Внешнее");
+    String call1 = F("TEMPERATURE, EXTERNAL");
+    bot.inlineMenuCallback("-Режим управления-", menu1, call1);
+  } else if (msg.data == "TEMPERATURE") {
+    bot.sendMessage("Режим управления по температуре  !", msg.chatID);
+    FLAG_EXTERNAL=false ;
+
+    // sendTelegramm_relay(msg.chatID);
+  } else if (msg.data == "EXTERNAL") {
+    bot.sendMessage("Режим внешнего управления", msg.chatID);
+     FLAG_EXTERNAL=true ;
+
+    //sendTelegramm_relay(msg.chatID);
+  } else {
     bot.sendMessage("Команда не распознана !", msg.chatID);
   }
 }

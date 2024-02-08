@@ -19,6 +19,7 @@ Logika();
     Send_Telegramm(); // проверка изменения температуры
     // Отправка сообщений
     sendMQTT_sensor ();
+   
     //---//////////////проверка кнопки
   }
   if ( _BUTTON_MILLIS < (millis() - BUTTON_HOLD_MILLIS )) //  проверка  раз 100 мс

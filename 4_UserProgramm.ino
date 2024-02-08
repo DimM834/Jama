@@ -93,6 +93,9 @@ void Tm_Hig() {
 }
 //---////////////////////////////////////////
 void Logika() {
+  if (FLAG_EXTERNAL) {
+      return; //внешнее управление
+    }
   if (RELAY2_STATUS)  // реле включено
   {
     if (TEMPERATURE[1] >= TEMPERATURE_MAX) {
@@ -136,6 +139,6 @@ void Relay_ON_OFF(byte on_off) {
   }
   String chat = _CHAT_MY_ID;
   sendTelegramm_relay(chat);
-  sendMQTT_relay();
+ sendMQTT_relay();
 }
 /////////////////////////////////////////
