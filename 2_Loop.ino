@@ -14,7 +14,7 @@ void loop() {
   {
     SEND_HOLD_MILLIS =  millis();
     Tm_Hig (); //опрос датчика температуры  и присвоение переменным
-    Serial.println("Tm_Hig");
+    ////Serial.println("Tm_Hig");
 Logika();
     Send_Telegramm(); // проверка изменения температуры
     // Отправка сообщений

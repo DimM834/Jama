@@ -22,7 +22,7 @@ void reconnect()
       //---////////////////////////////////////////////////////////////////
       if (client.connected())
       {
-        Serial.println("connect MQTT");
+        ////Serial.println("connect MQTT");
         break;
 
       }
@@ -36,12 +36,12 @@ void sendMQTT_sensor ()
 {
   //---/////////////////////// Если пропал сигнал с mqtt
   if (!client.connected()) {
-    Serial.println("reconnect");
+    ////Serial.println("reconnect");
     reconnect();
   }
 
-  Serial.println("");
-  Serial.println("sendMQTT");
+  ////Serial.println("");
+  ////Serial.println("sendMQTT");
 
   char msgBuffer_1[8];           // убедитесь что строки размера хватит
   char *_created_string;
@@ -66,7 +66,7 @@ void sendMQTT_relay ()
 {
   //---/////////////////////// Если пропал сигнал с mqtt
   if (!client.connected()) {
-    Serial.println("reconnect");
+    ////Serial.println("reconnect");
     // reconnect();
     return; // выход из процедуры если нет связи с WiFi
     // иначе задержка на reconnect в 10 с.
@@ -90,13 +90,13 @@ void sendMQTT_relay ()
   //-------/// сообщение о нажатии кнопки
   if (BUTTON_STATUS )
   {
-    Serial.println("BUTTON_STATUS= true");
+    ////Serial.println("BUTTON_STATUS= true");
     // сообщить в топик _NUMBER_SEN "/sensor/b1"
     client.publish(_NUMBER_SEN "/sensor/b1", "DA", true);
   }
   else
   {
-    Serial.println("BUTTON_STATUS= false");
+    ////Serial.println("BUTTON_STATUS= false");
     // сообщить в топик _NUMBER_SEN "/sensor/b1"
     client.publish(_NUMBER_SEN "/sensor/b1", "HET", true);
   }

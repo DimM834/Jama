@@ -1,6 +1,6 @@
 /*функция WiFi.status().
 
-  Serial.printf("Connection status: %d\n", WiFi.status());
+  ////Serial.printf("Connection status: %d\n", WiFi.status());
   Эта функция не ограничивается булевыми значениями. В общей сложности она может вернуть пять разных значений, описывающих статус WiFi-соединения:
 
   0: WL_IDLE_STATUS – когда WiFi в процессе между сменой статусов
@@ -33,7 +33,7 @@ unsigned long nextapCheckTick;
 
 
 #define _NUMBER_SEN "ESP01"  // номенр сенсора и заголовок топика MQTT
-#define _VERSION_SEN "v2.1"  // номенр сенсора и заголовок топика MQTT
+#define _VERSION_SEN "v2.2"  // номенр сенсора и заголовок топика MQTT
 
 #define _EEPROM_START 0
 struct LoginPass {
@@ -124,7 +124,7 @@ void actionGP(GyverPortal& p) {
 //---///////////////////////////////////////////////////
 
 void loginPortal() {
-  ////Serial.println("Portal start");
+  ////////Serial.println("Portal start");
 
   // запускаем точку доступа
   WiFi.mode(WIFI_AP);

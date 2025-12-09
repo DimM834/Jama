@@ -2,8 +2,10 @@
 // все значения температуры умножаем на 10, чтобы работать с десятыми
 int TEMPERATURE[4] = { 0, 0, 0, 0 };
 int HUMIDITY[1] = { 0 };
-byte TEMPERATURE_MIN = 25;
-byte TEMPERATURE_MAX = 30;
+//byte TEMPERATURE_MIN = 45; //25
+//byte TEMPERATURE_MAX = 60; //30
+#define TEMPERATURE_MIN  25
+#define TEMPERATURE_MAX  30
 
 boolean FLAG_EXTERNAL = false;  //внешнее управление
 
@@ -37,7 +39,6 @@ unsigned long SEND_HOLD_MILLIS = _SEND_MILLIS;
 #define _BUTTON_MILLIS 100  //раз в 1/10 секунду опрос кнопки
 unsigned long BUTTON_HOLD_MILLIS = 0;
 
-#define _MIN_TEMPER 25  // это 2,5 градуса
 
 
 
@@ -64,12 +65,12 @@ void callback(char* topic, byte* payload, unsigned int length) {
   json[length] = '\0';
 
   String message = String(json);
-  Serial.print("topic= ");
-  Serial.println(topic);
+  ////Serial.print("topic= ");
+  ////Serial.println(topic);
 
-  Serial.print("message= ");
-  Serial.println(message);
-  //Serial.println( strcmp(topic, _NUMBER_SEN "/relay/rel1"));
+  ////Serial.print("message= ");
+  ////Serial.println(message);
+  //////Serial.println( strcmp(topic, _NUMBER_SEN "/relay/rel1"));
 
   // if (strcmp(topic, _NUMBER_SEN "/relay/rel1") == 0)
   // { // Если пришло сообщение для relay1
@@ -85,7 +86,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
       if (RELAY2_STATUS)  // реле включено
       {
         Relay_ON_OFF(4);  // выключаем
-        Serial.println("rel2 LOW");
+        ////Serial.println("rel2 LOW");
         //---///////////////
       }
     } else {
@@ -93,7 +94,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
       if (RELAY2_STATUS == false)  // реле выключено
       {
         Relay_ON_OFF(3);  // включаем
-        Serial.println("rel2 HIGH");
+        ////Serial.println("rel2 HIGH");
         //---///////////////
       }
     }
@@ -107,14 +108,14 @@ void callback(char* topic, byte* payload, unsigned int length) {
   //    {
   //      //---///////////////
   //      BUTTON_STATUS = false;
-  //      Serial.println("BUTTON_STATUS   false");
+  //      ////Serial.println("BUTTON_STATUS   false");
   //      //---///////////////
   //    }
   //    if (message == "DA" )//and BUTTON_STATUS == false) //латиницей h e t
   //    {
   //      //---///////////////
   //      BUTTON_STATUS = true;
-  //      Serial.println("BUTTON_STATUS   true");
+  //      ////Serial.println("BUTTON_STATUS   true");
   //      //---///////////////
   //    }
   //  }

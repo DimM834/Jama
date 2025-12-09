@@ -9,14 +9,14 @@ void newMsg(FB_msg& msg) {
   // рестарт по запросу
   // if (msg.text == "restart") ESP.restart();
   // выводим имя юзера и текст сообщения
-  Serial.print(msg.username);
-  Serial.print(", ");
-  Serial.print(msg.text);
-  Serial.print(", ");
-  Serial.println(msg.chatID);
+  ////Serial.print(msg.username);
+  ////Serial.print(", ");
+  ////Serial.print(msg.text);
+  ////Serial.print(", ");
+  ////Serial.println(msg.chatID);
 
   // выводим всю информацию о сообщении
-  //  Serial.println(msg.toString());
+  //  ////Serial.println(msg.toString());
   if (msg.text == "/menu" or msg.text == "Меню") {
     bot.showMenu("Овощная \t Состояние \t Обогрев \n Настройки", _CHAT_MY_ID);
     bot.closeMenu("-1001644002787");  // меню не корректно работает в канале
@@ -96,8 +96,8 @@ void Send_Telegramm() {
   // Температура * на 10 !!!
   if (abs(TEMPERATURE[3] - TEMPERATURE[1]) > 3) {
     TEMPERATURE[3] = TEMPERATURE[1];  // прошлое измерение
-    Serial.print("Дельта = ");
-    Serial.println(TEMPERATURE[3] / 10.0);
+    ////Serial.print("Дельта = ");
+    ////Serial.println(TEMPERATURE[3] / 10.0);
 
     int temperatura = int(round(TEMPERATURE[1] / 5.0) * 5);
 
@@ -110,18 +110,24 @@ void Send_Telegramm() {
       sendBot += " С; Влажность = ";
       sendBot += HUMIDITY[0];
       sendBot += " %";
+ String chat = _CHAT_MY_ID;
+      bot.sendMessage(sendBot, chat);
 
-      bot.sendMessage(sendBot);
+      ////Serial.print("Отправка = ");
+      ////Serial.println(sendBot);
 
-      Serial.print("Отправка = ");
-      Serial.println(sendBot);
+      
     }
   }
   // отправка сообщений
-  if (TEMPERATURE[1] < _MIN_TEMPER) {
-    bot.sendMessage("Внимание!!! Очень низкая температура !!!");
+  if (TEMPERATURE[1] < TEMPERATURE_MIN) {
+    String sendBot_T = "Внимание!!! ";
+      sendBot_T += TEMPERATURE[4] / 10.0;
+      sendBot_T += " С, Очень низкая температура !!!";
+    bot.sendMessage(sendBot_T);
+    
   }
-}
+} 
 
 void sendTelegramm_relay(String& MyChadID) {
   String sendBot = "Свет в подполье ";
