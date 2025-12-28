@@ -69,7 +69,7 @@
 // //---///////////////////////////////////////////////////
 
 // void loginPortal() {
-//   ////////Serial.println("Portal start");
+//   ////////////Serial.println("Portal start");
 
 //   // запускаем точку доступа
 //   WiFi.mode(WIFI_AP);
