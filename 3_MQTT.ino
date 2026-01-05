@@ -104,3 +104,38 @@ void sendMQTT_relay ()
 
 }
 ////---////////////////////////////////////
+#if (_GET_WEB == 1) 
+void sendMQTT_Weather ()
+{
+  //---/////////////////////// Если пропал сигнал с mqtt
+  if (!client.connected()) {
+    ////////Serial.println("reconnect");
+    reconnect();
+  }
+
+  ////////Serial.println("");
+  ////////Serial.println("sendMQTT");
+
+  char msgBuffer_1[8];           // убедитесь что строки размера хватит
+  char *_created_string;
+  // char value_St = '0';
+
+  _created_string = dtostrf((WEATHER_YA.temperature/ 10.0), 4, 1, msgBuffer_1);
+  client.publish("weather/t_cur",  _created_string, true);
+
+  String Humid = String(WEATHER_YA.humidity);
+  char charVar[sizeof(Humid)];
+  Humid.toCharArray(charVar, sizeof(charVar));
+  client.publish("weather/h_cur", charVar , true);
+
+  if (WEATHER_YA.success)
+  {
+    client.publish("weather/success_cur", "1", true);
+  }
+  else
+  {
+    client.publish("weather/success_cur", "0", true);
+  }
+
+}
+#endif

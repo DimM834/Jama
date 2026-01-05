@@ -28,4 +28,16 @@ void loop() {
     BUTTON_HOLD_MILLIS = millis();
     Button();
   }
-}
+  #if (_GET_WEB == 1) 
+  // проверка на запрос к серверу погоды раз в час
+  if ((_SEND_MILLIS_WEATHER < (millis() - WEATHER_HOLD_MILLIS)) or HAND_REQUEST)  //  отправка раз в _SEND_MILLIS_WEATHER
+  {
+    WEATHER_HOLD_MILLIS = millis();
+    HAND_REQUEST = false ;
+    processURL();
+    // отправка значений погоды на MQTT
+    sendMQTT_Weather();
+  }
+#endif
+
+  }

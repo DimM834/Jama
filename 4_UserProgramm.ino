@@ -70,7 +70,7 @@ void Tm_Hig() {
  
   if (tempC != 85.0 and tempC != (-127.0)) {
     TEMPERATURE[1] = int(tempC * 10);
-  }  // пропустить измерение else TEMPERATURE[1] = 888;
+  }  else TEMPERATURE[1] = 888;
   
 
   ///
@@ -98,8 +98,8 @@ void Tm_Hig() {
 }
 //---////////////////////////////////////////
 void Logika() {
-  if (FLAG_EXTERNAL) {
-    return;  //внешнее управление
+  if (FLAG_EXTERNAL or TEMPERATURE[1]==888) {
+    return;  //внешнее управление или неудачное измерение
   }
 
 

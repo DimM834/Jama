@@ -12,6 +12,7 @@
 // ----------------------------------- libs -----------------------------------
 #include <GyverPortal.h>
 #include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
 #include <EEPROM.h>
 //---////////////////////////////////
 #include <PubSubClient.h>
@@ -35,6 +36,20 @@ unsigned long nextapCheckTick;
 #define _NUMBER_SEN "ESP01"  // номенр сенсора и заголовок топика MQTT
 #define _VERSION_SEN "v2.2"  // номенр сенсора и заголовок топика MQTT
 
+#define _GET_WEB 1 // запрос Яндекс погоды
+
+#if (_GET_WEB == 1) 
+#include <WiFiClientSecure.h>
+// Структура для хранения погоды
+struct WeatherData {
+  int temperature;
+  int humidity;
+  bool success;
+};
+ WeatherData WEATHER_YA = {888, 0, false};
+ bool HAND_REQUEST = true ; // принудительный запрос температуры
+#endif
+
 #define _EEPROM_START 0
 struct LoginPass {
   char ssid[20];
@@ -46,12 +61,16 @@ struct LoginPass {
 };
 LoginPass lp;
 
+
 //byte mqtt_server[] = { 192, 168, 0, 129 };  // ip адрес сервера mqtt
 // const char* mqtt_server = "m2.wqtt.ru";
 // char buffer[10];
 // #define  _MQTT_USER  "u_6UATRP"
 // #define  _MQTT_PASS  "Ir4NIfsA"
 // int PORT = 12051;
+
+
+
 
 //---////////////////////////////////
 // Портал !!!

@@ -26,7 +26,9 @@ void newMsg(FB_msg& msg) {
     Tm_Hig();
     String sendBot = "Овощная: Температура = ";
     sendBot += TEMPERATURE[4] / 10.0;
-    sendBot += " С⁰; Влажность = ";
+    sendBot += " (";
+    sendBot += TEMPERATURE[1] / 10.0;
+    sendBot += ") С⁰; Влажность = ";
     sendBot += HUMIDITY[0];
     sendBot += " %";
     if (RELAY2_STATUS)  // реле включено
@@ -57,6 +59,10 @@ void newMsg(FB_msg& msg) {
     // set_cycle_Time();
     // //---///Заглушка
     bot.sendMessage(sendBot, msg.chatID);
+
+    // запрос Я Погоды
+    processURL();
+
 
   } else if (msg.text == "Обогрев") {
     // FB_Time t = bot.getTime(3);
@@ -98,8 +104,8 @@ void newMsg(FB_msg& msg) {
     bot.sendMessage(sendBot, msg.chatID);
   } else if (msg.text == "Настройки") {
 
-    String menu1 = F("По температуре \n Внешнее");
-    String call1 = F("TEMPERATURE, EXTERNAL");
+    String menu1 = F("По температуре \n Внешнее \n Запрос погоды");
+    String call1 = F("TEMPERATURE, EXTERNAL , WEATHER_REQUEST ");
     bot.inlineMenuCallback("-Режим управления-", menu1, call1);
   } else if (msg.data == "TEMPERATURE") {
     bot.sendMessage("Режим управления по температуре  !", msg.chatID);
@@ -109,8 +115,9 @@ void newMsg(FB_msg& msg) {
   } else if (msg.data == "EXTERNAL") {
     bot.sendMessage("Режим внешнего управления", msg.chatID);
     FLAG_EXTERNAL = true;
-
-    //sendTelegramm_relay(msg.chatID);
+  } else if (msg.data == "WEATHER_REQUEST") {
+    bot.sendMessage("Запрос Я.Погоды", msg.chatID);
+    HAND_REQUEST = true;
   } else {
     //---/// Заглушка
     int t_input = msg.text.toInt();
@@ -128,7 +135,9 @@ void newMsg(FB_msg& msg) {
 
 
 void Send_Telegramm() {
-
+  if (TEMPERATURE[1] == 888) {
+    return;  //неудачное измерение
+  }
   // Температура * на 10 !!!
   if ((abs(TEMPERATURE[3] - TEMPERATURE[1]) > 3)) {
     TEMPERATURE[3] = TEMPERATURE[1];  // прошлое измерение

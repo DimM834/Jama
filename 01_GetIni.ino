@@ -12,6 +12,7 @@ int HUMIDITY[1] = { 0 };
 //byte _TEMPERATURE_MIN = 45; //25
 //byte _TEMPERATURE_MAX = 60; //30
 
+int TEMPERATURE_YANDEX = 888; 
 
 boolean FLAG_EXTERNAL = false;  //внешнее управление
 
@@ -21,6 +22,11 @@ boolean FLAG_EXTERNAL = false;  //внешнее управление
 #define _MY_1MENU Овощная                     // пункт меню
 //---////////////////////////////////
 
+// Ключ API Я.Погода 
+const char* access_key = "43671af9-6f2a-48f0-8709-66ae45be84df"; 
+// Координаты Мельникова 20А
+const float lat = 58.625620;
+const float lon = 49.637350;
 //---------------------------------------------------------------------------
 #define _RELAY1 D0  // Лампа
 #define _RELAY2 D5  // Реле для нагрева
@@ -71,6 +77,11 @@ unsigned long SEND_HOLD_MILLIS = _SEND_MILLIS;
 #define _BUTTON_MILLIS 100  //раз в 1/10 секунду опрос кнопки
 unsigned long BUTTON_HOLD_MILLIS = 0;
 
+#if (_GET_WEB == 1) 
+// отправка запроса прогноза погоды раз в _SEND_MILLIS_WEATHER
+#define _SEND_MILLIS_WEATHER 3600000 // раз в час
+unsigned long WEATHER_HOLD_MILLIS = 0;
+#endif
 
 
 
@@ -162,3 +173,7 @@ PubSubClient client;  // PORT будет определён в Setup
 
 FastBot bot(_BOT_TOKEN);
 //---///////////////////////////////////////////////////////////////////////////
+// для я.погоды
+#if (_GET_WEB == 1) 
+WiFiClientSecure clientSecure;
+#endif
