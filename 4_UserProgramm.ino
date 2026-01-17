@@ -18,7 +18,7 @@ void Button() {
   if (digitalRead(_BUTTON_PIN) == HIGH)  //Когда не нажата кнопка
   {
     if (BUTTON_STATUS == true) {  // Отпускаем
-      ////////Serial.println("BUTTON_STATUS= false");
+      ////////////Serial.println("BUTTON_STATUS= false");
       BUTTON_STATUS = false;
       // выключить свет
       Relay_ON_OFF(0);
@@ -52,18 +52,18 @@ void Tm_Hig() {
     if (!(isnan(h) || isnan(t))) {
       HUMIDITY[0] = int(h);
       TEMPERATURE[0] = int(t * 10);
-      ////////Serial.print("t =");
-      ////////Serial.print(TEMPERATURE[0]);
+      ////////////Serial.print("t =");
+      ////////////Serial.print(TEMPERATURE[0]);
       break;
     }
     delay(200);
-    ////////Serial.print("i =");
-    ////////Serial.println(i);
+    ////////////Serial.print("i =");
+    ////////////Serial.println(i);
   }
-  ////////Serial.print("dht11: T =");
-  ////////Serial.print(TEMPERATURE[0]);
-  ////////Serial.print("; H =");
-  ////////Serial.println(HUMIDITY[0]);
+  ////////////Serial.print("dht11: T =");
+  ////////////Serial.print(TEMPERATURE[0]);
+  ////////////Serial.print("; H =");
+  ////////////Serial.println(HUMIDITY[0]);
   /////
 
   tempC = DS18B20.getTempCByIndex(0);
@@ -74,20 +74,20 @@ void Tm_Hig() {
   
 
   ///
-  ////////Serial.print("DS18B20: =");
-  ////////Serial.print(tempC);
-  ////////Serial.print("  T =");
-  ////////Serial.println(TEMPERATURE[1]);
+  ////////////Serial.print("DS18B20: =");
+  ////////////Serial.print(tempC);
+  ////////////Serial.print("  T =");
+  ////////////Serial.println(TEMPERATURE[1]);
 
   //  ///!Заглушка !!! Вставить проверку на 1000 мс с момента запроса измерения!!!
   //  delay (700);
   //  tempC = DS18B20.getTempCByIndex(0);
   //  if (tempC != 85.0 and tempC != (-127.0) ) TEMPERATURE[1] = int(tempC * 10);
   //  ///
-  //  ////////Serial.print("DS18B20: =");
-  //  ////////Serial.print(tempC);
-  //  ////////Serial.print("  T =");
-  //  ////////Serial.println(TEMPERATURE[1]);
+  //  ////////////Serial.print("DS18B20: =");
+  //  ////////////Serial.print(tempC);
+  //  ////////////Serial.print("  T =");
+  //  ////////////Serial.println(TEMPERATURE[1]);
 
   /*
     TEMPERATURE[0] = 12;
@@ -247,7 +247,7 @@ void time_intervals() {
   // Если кнопка нажата (низкий уровень, так как используется INPUT_PULLUP)
   if (buttonState == LOW && !BUTTON_PRESSED) {
     BUTTON_PRESSED = true;
-    ////////Serial.println("Кнопка нажата . Ждём отпускания...");
+    ////////////Serial.println("Кнопка нажата . Ждём отпускания...");
     /**/  //bot.sendMessage("Кнопка нажата . Ждём отпускания...", _CHAT_MY_ID);
 
     LAST_PRESS_TIME = millis();
@@ -258,14 +258,14 @@ void time_intervals() {
       CYCLE_START_TIME = LAST_PRESS_TIME;
     }
 
-    ////////Serial.print("Нажатие #");
-    ////////Serial.println(PRESS_COUNT);
+    ////////////Serial.print("Нажатие #");
+    ////////////Serial.println(PRESS_COUNT);
     /**/  //bot.sendMessage("Нажатие # " + String(PRESS_COUNT), _CHAT_MY_ID);
   }
 
   // Если кнопка отпущена
   if (buttonState == HIGH && BUTTON_PRESSED) {
-    ////////Serial.println("Кнопка  отжата");
+    ////////////Serial.println("Кнопка  отжата");
     /**/  //bot.sendMessage("Кнопка  отжата", _CHAT_MY_ID);
 
     BUTTON_PRESSED = false;
@@ -277,34 +277,34 @@ void time_intervals() {
     // Запоминаем длительность нажатия
     if (PRESS_COUNT == 1) {
       SHORT_PRESS_DURATION = pressDuration;
-      ////////Serial.print("Первое нажатие длилось: ");
-      ////////Serial.print(SHORT_PRESS_DURATION);
-      ////////Serial.println(" мс");
+      ////////////Serial.print("Первое нажатие длилось: ");
+      ////////////Serial.print(SHORT_PRESS_DURATION);
+      ////////////Serial.println(" мс");
       /**/  //bot.sendMessage("Первое нажатие длилось: " + String(SHORT_PRESS_DURATION) + " мс", _CHAT_MY_ID);
 
     } else if (PRESS_COUNT == 2) {
       LONG_PRESS_DURATION = pressDuration;
-      ////////Serial.print("Второе нажатие длилось: ");
-      ////////Serial.print(LONG_PRESS_DURATION);
-      ////////Serial.println(" мс");
+      ////////////Serial.print("Второе нажатие длилось: ");
+      ////////////Serial.print(LONG_PRESS_DURATION);
+      ////////////Serial.println(" мс");
 
       /**/  //bot.sendMessage("Второе нажатие длилось: " + String(LONG_PRESS_DURATION) + " мс", _CHAT_MY_ID);
       // Рассчитываем время полного цикла
       CYCLE_DURATION = (LAST_PRESS_TIME - CYCLE_START_TIME) * 2;
-      ////////Serial.print("Время полного цикла: ");
-      ////////Serial.print(CYCLE_DURATION);
-      ////////Serial.println(" мс");
+      ////////////Serial.print("Время полного цикла: ");
+      ////////////Serial.print(CYCLE_DURATION);
+      ////////////Serial.println(" мс");
       /**/  //bot.sendMessage("Время полного цикла: " + String(CYCLE_DURATION) + " мс", _CHAT_MY_ID);
 
       // Определяем, какое нажатие короткое, а какое длинное
       if (SHORT_PRESS_DURATION < LONG_PRESS_DURATION) {
-        ////////Serial.println("Первое нажатие короче второго.");
+        ////////////Serial.println("Первое нажатие короче второго.");
         /**/  //bot.sendMessage("Первое нажатие короче второго.", _CHAT_MY_ID);
 
         //  мы сейчас после длинного нажатия, крышка закрыта
 
       } else {
-        ////////Serial.println("Первое нажатие длиннее второго.");
+        ////////////Serial.println("Первое нажатие длиннее второго.");
         /**/  //bot.sendMessage("Первое нажатие длиннее второго.", _CHAT_MY_ID);
         // необходимо 1 нажатия, мы сейчас после короткого нажатия
         waitForNextPressToStopMotor();  // Ожидаем конца длинного  нажатия
@@ -328,7 +328,7 @@ void time_intervals() {
 void startMotor() {
   digitalWrite(_PIN_RELAY_OUT, HIGH);  //  HIGH Включаем реле (двигатель запускается)
   MOTOR_RUNNING = true;                // Обновляем состояние двигателя
-                                       ////////Serial.println("Двигатель запущен.");
+                                       ////////////Serial.println("Двигатель запущен.");
   /**/ bot.sendMessage("Двигатель запущен.", _CHAT_MY_ID);
 }
 
@@ -336,7 +336,7 @@ void startMotor() {
 void stopMotor() {
   digitalWrite(_PIN_RELAY_OUT, LOW);  // LOW  Выключаем реле (двигатель останавливается)
   MOTOR_RUNNING = false;              // Обновляем состояние двигателя
-                                      ////////Serial.println("Двигатель остановлен.");
+                                      ////////////Serial.println("Двигатель остановлен.");
   /**/ bot.sendMessage("Двигатель остановлен.", _CHAT_MY_ID);
 }
 
@@ -350,7 +350,7 @@ byte waitForNextPressToStopMotor() {
 
 
 
-  ////////Serial.print("Ожидание конца следующего  нажатия для ");
+  ////////////Serial.print("Ожидание конца следующего  нажатия для ");
 
   while (true) {
     int buttonState = digitalRead(_PIN_SENSOR);
@@ -358,7 +358,7 @@ byte waitForNextPressToStopMotor() {
     // Если кнопка нажата
     if (buttonState == LOW && !BUTTON_PRESSED) {
       BUTTON_PRESSED = true;
-      ////////Serial.println(" Кнопка нажата");
+      ////////////Serial.println(" Кнопка нажата");
       /**/  //bot.sendMessage(" Кнопка нажата", _CHAT_MY_ID);
       LAST_PRESS_TIME = millis();
     }
@@ -366,15 +366,15 @@ byte waitForNextPressToStopMotor() {
     if (buttonState == HIGH && BUTTON_PRESSED) {
       BUTTON_PRESSED = false;
       LAST_RELEASE_TIME = millis();
-      ////////Serial.println(" Кнопка отпущена");
+      ////////////Serial.println(" Кнопка отпущена");
       /**/  //bot.sendMessage(" Кнопка отпущена", _CHAT_MY_ID);
       break;
     }
   }
   unsigned long temporaryPress = LAST_RELEASE_TIME - LAST_PRESS_TIME;
-  ////////Serial.print("Нажатие длилось: ");
-  ////////Serial.print(temporaryPress);
-  ////////Serial.println(" мс");
+  ////////////Serial.print("Нажатие длилось: ");
+  ////////////Serial.print(temporaryPress);
+  ////////////Serial.println(" мс");
   /**/  //bot.sendMessage("Нажатие длилось: " + String(temporaryPress) + " мс", _CHAT_MY_ID);
 
   // Проверяем, является ли нажатие коротким (с учётом дельты)
@@ -398,18 +398,18 @@ void waitForPress() {
   // Проверка, нажата ли кнопка при старте
   if (digitalRead(_PIN_SENSOR) == LOW) {
     delay(50);
-    ////////Serial.println("Кнопка нажата при старте. Ждём отпускания...");
+    ////////////Serial.println("Кнопка нажата при старте. Ждём отпускания...");
     while (digitalRead(_PIN_SENSOR) == LOW) {
       // Ждём, пока кнопка не разомкнётся
       delay(50);
     }
-    ////////Serial.println("Кнопка отпущена. Начинаем работу.");
+    ////////////Serial.println("Кнопка отпущена. Начинаем работу.");
   }
 }
 
 void waitForFirstPress() {
 
-  ////////Serial.println(" Ждём первого нажатия...");
+  ////////////Serial.println(" Ждём первого нажатия...");
   while (digitalRead(_PIN_SENSOR) == HIGH) {
     // Ждём, пока кнопка не замкнётся
     delay(50);
@@ -418,7 +418,7 @@ void waitForFirstPress() {
 
 // открыть задвижку
 void open_zaslonka() {
-  ////////Serial.println(" Кнопка 1 нажата, открыть задвижку");
+  ////////////Serial.println(" Кнопка 1 нажата, открыть задвижку");
   // открыть задвижку
 
   if (STATUS_ZADVIGKA != _STATUS_OPEN) {
@@ -430,7 +430,7 @@ void open_zaslonka() {
       STATUS_ZADVIGKA = waitForNextPressToStopMotor();
       if (STATUS_ZADVIGKA == 4) {
         // ошибка
-        ////////Serial.println(" Ошибка измерения - необходима реакция");
+        ////////////Serial.println(" Ошибка измерения - необходима реакция");
         /**/ bot.sendMessage("Открыть задвижку - Ошибка измерения времени нажатия - необходима реакция");  //, _CHAT_MY_ID);
         set_cycle_Time();
         //************///
@@ -439,12 +439,12 @@ void open_zaslonka() {
     }
     stopMotor();
   } else {
-    ////////Serial.println("Задвижка и так  открыта !!!");
+    ////////////Serial.println("Задвижка и так  открыта !!!");
   }
 }
 // закрыть задвижку
 void close_zaslonka() {
-  ////////Serial.println(" Кнопка 2 нажата, закрыть задвижку");
+  ////////////Serial.println(" Кнопка 2 нажата, закрыть задвижку");
   // закрыть задвижку
 
   if (STATUS_ZADVIGKA != _STATUS_CLOSE) {
@@ -459,7 +459,7 @@ void close_zaslonka() {
       STATUS_ZADVIGKA = waitForNextPressToStopMotor();
       if (STATUS_ZADVIGKA == 4) {
         // ошибка
-        ////////Serial.println(" Ошибка измерения - необходима реакция");
+        ////////////Serial.println(" Ошибка измерения - необходима реакция");
         /**/ bot.sendMessage("Закрыть задвижку - Ошибка измерения времени нажатия - необходима реакция");  //, _CHAT_MY_ID);
         set_cycle_Time();
         //************///
@@ -468,13 +468,13 @@ void close_zaslonka() {
     }
     stopMotor();
   } else {
-    ////////Serial.println("Задвижка и так  закрыта !!!");
+    ////////////Serial.println("Задвижка и так  закрыта !!!");
   }
 }
 // задвижка приоткрыта
 void open_slightly_zaslonka() {
 
-  ////////Serial.println(" Кнопка 3 нажата, приоткрыть задвижку");
+  ////////////Serial.println(" Кнопка 3 нажата, приоткрыть задвижку");
   // задвижка приоткрыта
   if (STATUS_ZADVIGKA != _STATUS_Z) {
     /**/ bot.sendMessage("Приоткрыть задвижку", _CHAT_MY_ID);
@@ -483,13 +483,13 @@ void open_slightly_zaslonka() {
     //STATUS_ZADVIGKA == _STATUS_Z
     if (STATUS_ZADVIGKA == _STATUS_CLOSE)  // открываем и далее ждём первого нажатия
     {
-      ////////Serial.println(" Закрыто - открываем ");
+      ////////////Serial.println(" Закрыто - открываем ");
       while (STATUS_ZADVIGKA != _STATUS_OPEN) {
 
         STATUS_ZADVIGKA = waitForNextPressToStopMotor();
         if (STATUS_ZADVIGKA == 4) {
           // ошибка
-          ////////Serial.println(" Ошибка измерения - необходима реакция");
+          ////////////Serial.println(" Ошибка измерения - необходима реакция");
           /**/ bot.sendMessage("Приоткрыть задвижку - Ошибка измерения времени нажатия - необходима реакция");  //, _CHAT_MY_ID);
           set_cycle_Time();
           //************///
@@ -499,7 +499,7 @@ void open_slightly_zaslonka() {
     }
     if (STATUS_ZADVIGKA == _STATUS_OPEN)  // ждём первого нажатия
     {
-      ////////Serial.println(" Открыто ");
+      ////////////Serial.println(" Открыто ");
       waitForFirstPress();
       STATUS_ZADVIGKA = _STATUS_Z;
       delay(_SHIFT_ZADVIGKA);
@@ -507,17 +507,17 @@ void open_slightly_zaslonka() {
     }
     // Проверка на то что кнопка нажата
     delay(_SHIFT_ZADVIGKA * 3);
-    ////////Serial.println(" Проверка на то что кнопка нажата");
+    ////////////Serial.println(" Проверка на то что кнопка нажата");
     if (digitalRead(_PIN_SENSOR) == HIGH) {
       STATUS_ZADVIGKA = 4;  // ошибка
-      ////////Serial.println(" Ошибка измерения - необходима реакция");
+      ////////////Serial.println(" Ошибка измерения - необходима реакция");
       /**/  //bot.sendMessage(" Ошибка измерения времени нажатия - необходима реакция");  //, _CHAT_MY_ID);
       set_cycle_Time();
       //************///
     }
 
   } else {
-    ////////Serial.println("Задвижка и так  приоткрыта !!!");
+    ////////////Serial.println("Задвижка и так  приоткрыта !!!");
   }
 }
 

@@ -9,14 +9,17 @@ void newMsg(FB_msg& msg) {
   // рестарт по запросу
   // if (msg.text == "restart") ESP.restart();
   // выводим имя юзера и текст сообщения
-  ////////Serial.print(msg.username);
-  ////////Serial.print(", ");
-  ////////Serial.print(msg.text);
-  ////////Serial.print(", ");
-  ////////Serial.println(msg.chatID);
+  ////////////Serial.print(msg.username);
+  ////////////Serial.print(", ");
+  ////////////Serial.print(msg.text);
+  ////////////Serial.print(", ");
+  ////////////Serial.println(msg.chatID);
+
+
+
 
   // выводим всю информацию о сообщении
-  //  ////////Serial.println(msg.toString());
+  //  ////////////Serial.println(msg.toString());
   if (msg.text == "/menu" or msg.text == "Меню") {
     bot.showMenu("Овощная \t Состояние \t Обогрев \n Настройки", _CHAT_MY_ID);
     bot.closeMenu("-1001644002787");  // меню не корректно работает в канале
@@ -25,7 +28,7 @@ void newMsg(FB_msg& msg) {
     bot.sendMessage("Запрос ...", msg.chatID);
     Tm_Hig();
     String sendBot = "Овощная: Температура = ";
-    sendBot += TEMPERATURE[4] / 10.0;
+    sendBot += TEMPERATURE[3] / 10.0;
     sendBot += " (";
     sendBot += TEMPERATURE[1] / 10.0;
     sendBot += ") С⁰; Влажность = ";
@@ -139,27 +142,27 @@ void Send_Telegramm() {
     return;  //неудачное измерение
   }
   // Температура * на 10 !!!
-  if ((abs(TEMPERATURE[3] - TEMPERATURE[1]) > 3)) {
-    TEMPERATURE[3] = TEMPERATURE[1];  // прошлое измерение
-    ////////Serial.print("Дельта = ");
-    ////////Serial.println(TEMPERATURE[3] / 10.0);
+  if ((abs(TEMPERATURE[2] - TEMPERATURE[1]) > 3)) {
+    TEMPERATURE[2] = TEMPERATURE[1];  // прошлое измерение
+    ////////////Serial.print("Дельта = ");
+    ////////////Serial.println(TEMPERATURE[2] / 10.0);
 
     int temperatura = int(round(TEMPERATURE[1] / 5.0) * 5);
 
-    if (TEMPERATURE[4] != temperatura)  // прошлая отправка
+    if (TEMPERATURE[3] != temperatura)  // прошлая отправка
     {
-      TEMPERATURE[4] = temperatura;
+      TEMPERATURE[3] = temperatura;
 
       String sendBot = "Овощная: Температура = ";
-      sendBot += TEMPERATURE[4] / 10.0;
+      sendBot += TEMPERATURE[3] / 10.0;
       sendBot += " С; Влажность = ";
       sendBot += HUMIDITY[0];
       sendBot += " %";
       String chat = _CHAT_MY_ID;
       bot.sendMessage(sendBot, chat);
 
-      ////////Serial.print("Отправка = ");
-      ////////Serial.println(sendBot);
+      ////////////Serial.print("Отправка = ");
+      ////////////Serial.println(sendBot);
     }
   }
   // отправка сообщений

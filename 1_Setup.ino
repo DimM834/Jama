@@ -1,6 +1,6 @@
 void setup() {
 
- Serial.begin(115200);
+ ////Serial.begin(115200);
 
   //---/////////////////////////////////////////////////////////////////
   pinMode(_RELAY1, OUTPUT);         //Порт на для управления Реле лампа
@@ -10,7 +10,7 @@ void setup() {
   pinMode(_BUTTON_PIN, INPUT);  //Порт на для сухой контакт
   pinMode(_PIN_SENSOR, INPUT);  // Кнопка положения задвижки подключена к пину 2 с подтяжкой к питанию
 
- Serial.println("RELAY");
+ ////Serial.println("RELAY");
   // первоначально реле выключить
   digitalWrite(_RELAY1, LOW);         //Realy Close
   digitalWrite(_RELAY2, LOW);         //Realy Close
@@ -18,11 +18,11 @@ void setup() {
 
   //---/////////////////////////////////////////////////////////////////
 
- Serial.print("SDK version: ");
- Serial.println(ESP.getSdkVersion());
- Serial.print("Flash real size: ");
- Serial.print("Firmware compiled for flash: ");
- Serial.println(ESP.getFlashChipSize());
+ ////Serial.print("SDK version: ");
+ ////Serial.println(ESP.getSdkVersion());
+ ////Serial.print("Flash real size: ");
+ ////Serial.print("Firmware compiled for flash: ");
+ ////Serial.println(ESP.getFlashChipSize());
 
 
   //---/////////////////////////////////
@@ -37,20 +37,20 @@ void setup() {
     }
   }
   //---///////////////////////////////
- Serial.println("Данные для входа: ");
- Serial.println();
- Serial.print("SSID: ");
- Serial.println(lp.ssid);
- Serial.print("Password: ");
- Serial.println(lp.pass);
- Serial.print("mqttserv: ");
- Serial.println(lp.mqttserv);
- Serial.print("mqttlogin: ");
- Serial.println(lp.mqttlogin);
- Serial.print("mqttpass: ");
- Serial.println(lp.mqttpass);
- Serial.print("mqttport: ");
- Serial.println(lp.mqttport);
+ ////Serial.println("Данные для входа: ");
+ ////Serial.println();
+ ////Serial.print("SSID: ");
+ ////Serial.println(lp.ssid);
+ ////Serial.print("Password: ");
+ ////Serial.println(lp.pass);
+ ////Serial.print("mqttserv: ");
+ ////Serial.println(lp.mqttserv);
+ ////Serial.print("mqttlogin: ");
+ ////Serial.println(lp.mqttlogin);
+ ////Serial.print("mqttpass: ");
+ ////Serial.println(lp.mqttpass);
+ ////Serial.print("mqttport: ");
+ ////Serial.println(lp.mqttport);
 
 
 
@@ -69,34 +69,34 @@ void setup() {
   unsigned long wifiConnectStart = millis();
   while (WiFi.status() != WL_CONNECTED) {
     // if (WiFi.status() == WL_CONNECT_FAILED) {
-    //   ////////Serial.println("Ошибка соединения WIFI. Проверьте данные: ");
-    //   ////////Serial.println();
-    //   ////////Serial.print("SSID: ");
-    //   ////////Serial.println(lp.ssid);
-    //   ////////Serial.print("Password: ");
-    //   ////////Serial.println(lp.pass);
-    //   ////////Serial.println();
+    //   ////////////Serial.println("Ошибка соединения WIFI. Проверьте данные: ");
+    //   ////////////Serial.println();
+    //   ////////////Serial.print("SSID: ");
+    //   ////////////Serial.println(lp.ssid);
+    //   ////////////Serial.print("Password: ");
+    //   ////////////Serial.println(lp.pass);
+    //   ////////////Serial.println();
     // }
-   Serial.print(" .");
+   ////Serial.print(" .");
     delay(500);
 
     if (millis() - wifiConnectStart > 5000) {
-     Serial.println("Ошибка соединения WiFi");
-     Serial.println("Попробуйте отправить обновленные параметры конфигурации.");
+     ////Serial.println("Ошибка соединения WiFi");
+     ////Serial.println("Попробуйте отправить обновленные параметры конфигурации.");
       break;
     }
   }
 
- Serial.println("CTAPT ");
+ ////Serial.println("CTAPT ");
 
   //------------------------------------------------------
 
- Serial.println("DHT");
+ ////Serial.println("DHT");
   //  dht22.begin();
   dht11.begin();
 
   //
- Serial.println("DS18B20");
+ ////Serial.println("DS18B20");
   DS18B20.begin();
   // по умолчанию разрешение датчика – 9-битное;
   // если у вас какие-то проблемы, его имеет смысл
@@ -124,7 +124,7 @@ void setup() {
   //---Задвижка--------------------------------------------------------------
 
    set_cycle_Time();
-  //Serial.println("Цикл  завершился");
+  //////Serial.println("Цикл  завершился");
  
  
 

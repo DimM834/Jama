@@ -1,6 +1,6 @@
 /*функция WiFi.status().
 
-  ////////Serial.printf("Connection status: %d\n", WiFi.status());
+  ////////////Serial.printf("Connection status: %d\n", WiFi.status());
   Эта функция не ограничивается булевыми значениями. В общей сложности она может вернуть пять разных значений, описывающих статус WiFi-соединения:
 
   0: WL_IDLE_STATUS – когда WiFi в процессе между сменой статусов
@@ -44,9 +44,10 @@ unsigned long nextapCheckTick;
 struct WeatherData {
   int temperature;
   int humidity;
+  byte currentHour;
   bool success;
 };
- WeatherData WEATHER_YA = {888, 0, false};
+ WeatherData WEATHER_YA = {888, 0, 25, false};
  bool HAND_REQUEST = true ; // принудительный запрос температуры
 #endif
 
@@ -143,7 +144,7 @@ void actionGP(GyverPortal& p) {
 //---///////////////////////////////////////////////////
 
 void loginPortal() {
-  ////////////Serial.println("Portal start");
+  ////////////////Serial.println("Portal start");
 
   // запускаем точку доступа
   WiFi.mode(WIFI_AP);

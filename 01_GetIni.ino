@@ -67,6 +67,8 @@ boolean RELAY1_STATUS = false;
 boolean RELAY2_STATUS = false;
 boolean BUTTON_STATUS = false;
 
+//uint8_t HOUR_YA = 25;       // час на который получены данные по погоде  
+
 #define _LOOP_MILLIS 3000  //раз в 3 секунду опрос
 unsigned long MQTT_HOLD_MILLIS = 0;
 
@@ -77,11 +79,11 @@ unsigned long SEND_HOLD_MILLIS = _SEND_MILLIS;
 #define _BUTTON_MILLIS 100  //раз в 1/10 секунду опрос кнопки
 unsigned long BUTTON_HOLD_MILLIS = 0;
 
-#if (_GET_WEB == 1) 
-// отправка запроса прогноза погоды раз в _SEND_MILLIS_WEATHER
-#define _SEND_MILLIS_WEATHER 3600000 // раз в час
-unsigned long WEATHER_HOLD_MILLIS = 0;
-#endif
+// #if (_GET_WEB == 1) 
+// // отправка запроса прогноза погоды раз в _SEND_MILLIS_WEATHER
+// #define _SEND_MILLIS_WEATHER 3600000 // раз в час
+// unsigned long WEATHER_HOLD_MILLIS = 0;
+// #endif
 
 
 
@@ -108,12 +110,12 @@ void callback(char* topic, byte* payload, unsigned int length) {
   json[length] = '\0';
 
   String message = String(json);
-  ////////Serial.print("topic= ");
-  ////////Serial.println(topic);
+  ////////////Serial.print("topic= ");
+  ////////////Serial.println(topic);
 
-  ////////Serial.print("message= ");
-  ////////Serial.println(message);
-  //////////Serial.println( strcmp(topic, _NUMBER_SEN "/relay/rel1"));
+  ////////////Serial.print("message= ");
+  ////////////Serial.println(message);
+  //////////////Serial.println( strcmp(topic, _NUMBER_SEN "/relay/rel1"));
 
   // if (strcmp(topic, _NUMBER_SEN "/relay/rel1") == 0)
   // { // Если пришло сообщение для relay1
@@ -129,7 +131,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
       if (RELAY2_STATUS)  // реле включено
       {
         Relay_ON_OFF(4);  // выключаем
-        ////////Serial.println("rel2 LOW");
+        ////////////Serial.println("rel2 LOW");
         //---///////////////
       }
     } else {
@@ -137,7 +139,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
       if (RELAY2_STATUS == false)  // реле выключено
       {
         Relay_ON_OFF(3);  // включаем
-        ////////Serial.println("rel2 HIGH");
+        ////////////Serial.println("rel2 HIGH");
         //---///////////////
       }
     }
@@ -151,14 +153,14 @@ void callback(char* topic, byte* payload, unsigned int length) {
   //    {
   //      //---///////////////
   //      BUTTON_STATUS = false;
-  //      ////////Serial.println("BUTTON_STATUS   false");
+  //      ////////////Serial.println("BUTTON_STATUS   false");
   //      //---///////////////
   //    }
   //    if (message == "DA" )//and BUTTON_STATUS == false) //латиницей h e t
   //    {
   //      //---///////////////
   //      BUTTON_STATUS = true;
-  //      ////////Serial.println("BUTTON_STATUS   true");
+  //      ////////////Serial.println("BUTTON_STATUS   true");
   //      //---///////////////
   //    }
   //  }

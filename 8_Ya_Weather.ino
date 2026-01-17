@@ -8,8 +8,8 @@
 void processURL() {
   // формируем отправку
 
-  Serial.print(" WiFi.status=");
-  Serial.print(WiFi.status());
+  ////Serial.print(" WiFi.status=");
+  ////Serial.print(WiFi.status());
 
   if (WiFi.status() == WL_CONNECTED)  // проверка на частоту отправки
   {
@@ -20,8 +20,8 @@ void processURL() {
     url += "&lon=" + String(lon, 5);
 
 
-    Serial.print(" url =");
-    Serial.println(url);
+    ////Serial.print(" url =");
+    ////Serial.println(url);
 
     sendURL(url);
   }
@@ -37,24 +37,24 @@ void sendURL(String &url) {
   http.addHeader("X-Yandex-Weather-Key", access_key);
   http.setTimeout(15000);
   int httpCode = http.GET();
-  Serial.println(url);
-  Serial.print(" httpCode: ");
-  Serial.println(httpCode);
+  ////Serial.println(url);
+  ////Serial.print(" httpCode: ");
+  ////Serial.println(httpCode);
 
 
   ///---   ////////////////////////////
 
   if (httpCode > 0) {
     if (httpCode == HTTP_CODE_OK) {
-      Serial.println("✓ Данные получены");
+      ////Serial.println("✓ Данные получены");
       // Читаем ответ
       String response = http.getString();
 
 
-      Serial.print("Размер данных: ");
-      Serial.print(response.length());
-      Serial.println(" байт\n");
-      /**/ bot.sendMessage("Я.Погода = " + response, _CHAT_MY_ID);
+      ////Serial.print("Размер данных: ");
+      ////Serial.print(response.length());
+      ////Serial.println(" байт\n");
+      /*bot.sendMessage("Я.Погода = " + response, _CHAT_MY_ID); */ 
       // Проверяем целостность
       if (response.length() > 100 && response.indexOf("{") != -1) {
         // Парсим текущую погоду
@@ -64,19 +64,19 @@ void sendURL(String &url) {
         parseNext6Hours(response);
 
       } else {
-        Serial.println("✗ Некорректный ответ");
-        /**/ bot.sendMessage("Я.Погода Некорректный ответ", _CHAT_MY_ID);
+        ////Serial.println("✗ Некорректный ответ");
+        /***/ bot.sendMessage("Я.Погода Некорректный ответ", _CHAT_MY_ID);
       }
 
     } else {
-      Serial.print("✗ Ошибка: ");
-      Serial.println(http.errorToString(httpCode));
-      /**/ bot.sendMessage("Я.Погода  Ошибка: = " + http.errorToString(httpCode), _CHAT_MY_ID);
+      ////Serial.print("✗ Ошибка: ");
+      ////Serial.println(http.errorToString(httpCode));
+      /***/ bot.sendMessage("Я.Погода  Ошибка: = " + http.errorToString(httpCode), _CHAT_MY_ID);
     }
     http.end();
 
-    Serial.println("\n" + String(40, '='));
-    Serial.println("=== ЗАВЕРШЕНО ===");
+    ////Serial.println("\n" + String(40, '='));
+    ////Serial.println("=== ЗАВЕРШЕНО ===");
   }
 }
 
@@ -97,7 +97,7 @@ int getCurrentHourFromJSON(String &json) {
         if (colonPos != -1) {
           // Извлекаем часы (2 символа перед двоеточием)
           String hourStr = timeStr.substring(colonPos - 2, colonPos);
-          int hour = hourStr.toInt();
+          byte  hour = byte(hourStr.toInt());
 
           // Корректируем для московского времени (+3 часа)
           hour += 3;
@@ -115,21 +115,21 @@ int getCurrentHourFromJSON(String &json) {
 ///////////////////////////////////////////////////
 // Функция для парсинга текущей погоды
 void parseCurrentWeather(String &json) {
-  Serial.println("=== ТЕКУЩАЯ ПОГОДА ===");
+  ////Serial.println("=== ТЕКУЩАЯ ПОГОДА ===");
 
   // Определяем текущий час
-  int currentHour = getCurrentHourFromJSON(json);
-  Serial.print("Текущий час (МСК): ");
-  Serial.println(currentHour);
+  WEATHER_YA.currentHour = getCurrentHourFromJSON(json);
+  ////Serial.print("Текущий час (МСК): ");
+  ////Serial.println(WEATHER_YA.currentHour);
    WEATHER_YA.success = true;
-  // ТЕМПЕРАТУРА
+     // ТЕМПЕРАТУРА
   String tempStr = extractValue(json, "\"temp\":");
   if (tempStr.length() > 0) {
     WEATHER_YA.temperature = int(tempStr.toFloat() * 10);
 
-    Serial.print("Температура: ");
-    Serial.print(WEATHER_YA.temperature / 10.0);
-    Serial.println("°C");
+    ////Serial.print("Температура: ");
+    ////Serial.print(WEATHER_YA.temperature / 10.0);
+    ////Serial.println("°C");
   } else {
     WEATHER_YA.success = false;
   }
@@ -139,28 +139,28 @@ void parseCurrentWeather(String &json) {
   if (humidityStr.length() > 0) {
     WEATHER_YA.humidity = humidityStr.toInt();
 
-    Serial.print("Влажность: ");
-    Serial.print(WEATHER_YA.humidity);
-    Serial.println("%");
+    ////Serial.print("Влажность: ");
+    ////Serial.print(WEATHER_YA.humidity);
+    ////Serial.println("%");
   } else {
     WEATHER_YA.success = false;
   }
 
 
   if (WEATHER_YA.success) {
-    bot.sendMessage("Я.Погода  на  = " + String(currentHour) + " ч." , _CHAT_MY_ID);
+    bot.sendMessage("Я.Погода  на  = " + String(WEATHER_YA.currentHour) + " ч." , _CHAT_MY_ID);
     bot.sendMessage("Температура: " + String(WEATHER_YA.temperature / 10.0) + "°C,  Влажность: " + String(WEATHER_YA.humidity) + "%", _CHAT_MY_ID);
 
   } else {
-    bot.sendMessage("Я.Погода  на  = " + String(currentHour) + " ч. Получена с ошибкой ", _CHAT_ID);
+    bot.sendMessage("Я.Погода  на  = " + String(WEATHER_YA.currentHour) + " ч. Получена с ошибкой ", _CHAT_ID);
   }
 
-  Serial.println("====================\n");
+  ////Serial.println("====================\n");
 }
 //////////////////////////////////////////////////////////////////////
 void parseNext6Hours(String &json) {
-  Serial.println("=== ПРОГНОЗ НА СЛЕДУЮЩИЕ 6 ЧАСОВ ===");
-  Serial.println("=== Заглушка !!! ===");
+  ////Serial.println("=== ПРОГНОЗ НА СЛЕДУЮЩИЕ 6 ЧАСОВ ===");
+  ////Serial.println("=== Заглушка !!! ===");
 
 }
 ///////////////////////////////////////////////////////////////////////

@@ -13,13 +13,26 @@ void loop() {
   {
     SEND_HOLD_MILLIS = millis();
     Tm_Hig();  //опрос датчика температуры  и присвоение переменным
-               ////////Serial.println("Tm_Hig");
+               ////////////Serial.println("Tm_Hig");
                //---///Заглушка
     Logika();
     //---///Заглушка
     Send_Telegramm();  // проверка изменения температуры
     // Отправка сообщений
     sendMQTT_sensor();
+#if (_GET_WEB == 1)
+    // проверка на запрос к серверу погоды раз в час
+    FB_Time t = bot.getTime(3);
+
+    if (t.hour != WEATHER_YA.currentHour)  //
+    {
+      processURL();
+      // отправка значений погоды на MQTT
+      sendMQTT_Weather();
+    
+    }
+#endif
+
 
     //---//////////////проверка кнопки
   }
@@ -28,16 +41,16 @@ void loop() {
     BUTTON_HOLD_MILLIS = millis();
     Button();
   }
-  #if (_GET_WEB == 1) 
-  // проверка на запрос к серверу погоды раз в час
-  if ((_SEND_MILLIS_WEATHER < (millis() - WEATHER_HOLD_MILLIS)) or HAND_REQUEST)  //  отправка раз в _SEND_MILLIS_WEATHER
+#if (_GET_WEB == 1)
+  //проверка на запрос к серверу погоды по запросу
+  if (HAND_REQUEST)  //  отправка по запросу
   {
-    WEATHER_HOLD_MILLIS = millis();
-    HAND_REQUEST = false ;
+
     processURL();
     // отправка значений погоды на MQTT
     sendMQTT_Weather();
+    HAND_REQUEST = false;
+ /***/ bot.sendMessage("Я.Погода ручной запрос", _CHAT_MY_ID);
   }
 #endif
-
-  }
+}
